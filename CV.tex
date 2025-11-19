@@ -1,0 +1,377 @@
+\documentclass[10pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+  ignoreheadfoot, % set margins without considering header and footer
+  top=2 cm, % seperation between body and page edge from the top
+  bottom=2 cm, % seperation between body and page edge from the bottom
+  left=2 cm, % seperation between body and page edge from the left
+  right=2 cm, % seperation between body and page edge from the right
+  footskip=1.0 cm, % seperation between body and footer
+  % showframe % for debugging
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 0, 0} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{xcolor}
+\usepackage{amsmath} % for math
+\usepackage[
+  pdftitle={Hassan Aftab},
+  pdfauthor={Hassan Aftab},
+  pdfcreator={LaTeX with RenderCV},
+  colorlinks=true,
+  urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page break right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+\definecolor{linkedinblue}{HTML}{0A66C2}
+\definecolor{gmailred}{HTML}{D14836}
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+\input{glyphtounicode}
+\pdfgentounicode=1
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\fi
+
+\usepackage{charter}
+
+% Some settings:
+\raggedright
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0.15cm} % set column separation
+\pagenumbering{gobble} % no page numbering
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+  % left space:
+  -1pt
+}{
+  % top space:
+  0.3 cm
+}{
+  % bottom space:
+  0.2 cm
+} % section title spacing
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$} % custom bullet points
+\newenvironment{highlights}{
+  \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0 cm + 10pt
+      ]
+    }{
+  \end{itemize}
+} % new environment for highlights
+
+\newenvironment{highlightsforbulletentries}{
+  \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+      ]
+    }{
+  \end{itemize}
+} % new environment for highlights for bullet entries
+
+\newenvironment{onecolentry}{
+  \begin{adjustwidth}{
+      0 cm + 0.00001 cm
+    }{
+      0 cm + 0.00001 cm
+    }
+  }{
+  \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+  \onecolentry
+  \def\secondColumn{#2}
+  \setcolumnwidth{\fill, 4.5 cm}
+  \begin{paracol}{2}
+  }{
+    \switchcolumn \raggedleft \secondColumn
+  \end{paracol}
+  \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{threecolentry}[3][]{
+  \onecolentry
+  \def\thirdColumn{#3}
+  \setcolumnwidth{, \fill, 4.5 cm}
+  \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+  }{
+    \switchcolumn \raggedleft \thirdColumn
+  \end{paracol}
+  \endonecolentry
+} % new environment for three column entries
+
+\newenvironment{header}{
+  \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+  \par\kern\topsep
+} % new environment for the header
+
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+  \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+    \put(
+      \LenToUnit{\paperwidth-2 cm-0 cm+0.05cm},
+      \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{
+          \small\color{gray}\textit{Last updated in September 2024}\hspace{\widthof{Last updated in September 2024}}
+    }}}%
+  }%
+}%
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+\begin{document}
+\newcommand{\AND}{\unskip
+  \cleaders\copy\ANDbox\hskip\wd\ANDbox
+  \ignorespaces
+}
+\newsavebox\ANDbox
+\sbox\ANDbox{$|$}
+
+\begin{header}
+  \fontsize{25 pt}{25 pt}\selectfont Hassan Aftab
+
+  \vspace{5 pt}
+
+  \normalsize
+  \textbf{Sr. DevSecOps Engineer | SRE @ TEO International | Automation, Shell scripting, CI/CD, Docker, Kubernetes, GitOps | Azure, AWS | Terraform, Ansible | Sonar, Prometheus, Grafana | Kali Linux, Cybersecurity, White Hat}
+
+  \vspace{5 pt}
+
+  \normalsize
+  \faPhone\ \mbox{+92-313-5189591}%
+  \kern 5.0 pt%
+  \AND%
+  \kern 5.0 pt%
+  \textcolor{gmailred}{\faEnvelope}
+  \mbox{ \hrefWithoutArrow {mailto:hassanaftab.pk@gmail.com}{hassanaftab.pk@gmail.com} }%
+  \kern 5.0 pt%
+  \AND%
+  \kern 5.0 pt%
+  \textcolor{black}{\faMapMarker*}\ \mbox{Islamabad, Pakistan}%
+  \kern 5.0 pt%
+  \AND%
+  \kern 5.0 pt%
+  \textcolor{linkedinblue}{ \faLinkedin } \mbox{\hrefWithoutArrow{https://www.linkedin.com/in/hassanaftab93/}{linkedin.com/in/hassanaftab93}}%
+  \kern 5.0 pt%
+  \AND%
+  \kern 5.0 pt%
+  \faGithub
+  \kern 5.0 pt%
+  \mbox{\hrefWithoutArrow{https://github.com/hassanaftab93}{github.com/hassanaftab93}}%
+  \kern 5.0 pt%
+  \AND%
+  \kern 5.0 pt%
+  \faGlobe 
+  \kern 5.0 pt%
+  \mbox{\hrefWithoutArrow{https://linktr.ee/hassanaftab}{linktr.ee/hassanaftab}}%
+\end{header}
+
+\vspace{0.2cm}
+
+\section{Summary}
+\begin{onecolentry}
+
+  \textbf{Security-focused DevOps Engineer} with expertise in \textbf{ethical hacking, cloud security, and infrastructure automation}. Leverages a proactive, offensive security mindset to identify and remediate vulnerabilities across the CI/CD pipeline and cloud environments. Designs and implements robust, scalable systems that enhance security posture without impeding development velocity, enabling organizations to deploy with confidence.
+
+\end{onecolentry}
+
+\section{Technical Skills}
+\begin{itemize}
+  \item \textbf{Cloud \& Platforms:} AWS, Azure, Kubernetes (AKS), Docker.
+  \item \textbf{Infrastructure as Code:} Terraform, GitOps (ArgoCD).
+  \item \textbf{CI/CD \& Automation:} CI/CD Pipelines, GitHub Actions, Azure DevOps, Bash, Python.
+  \item \textbf{Security Tools:} SonarQube/SonarCloud, Burp Suite, Nmap, Azure Policy.
+  \item \textbf{Security \& Compliance:} DevSecOps, Vulnerability Management, OWASP, MITRE ATT\&CK, GDPR.
+  \item \textbf{Monitoring \& Logging:} Azure Monitor, Prometheus, Grafana, Log Analytics.
+\end{itemize}
+
+\section{Experience}
+
+\begin{twocolentry}{
+    Oct 2024 – Present
+  }
+  \textbf{Sr. DevSecOps Engineer}, TEO International
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+  \begin{highlights}
+  \item Standardized and enforced secure CI/CD pipelines, reducing deployment time by 65\% and increasing deployment frequency from weekly to multiple daily releases.
+  \item Led Docker and Kubernetes adoption, containerizing 40+ microservices and improving resource utilization by 45\%, while reducing infrastructure costs by 30\%.
+  \item Planned and optimized Azure Kubernetes Service (AKS) provisioning and operations, eliminating manual intervention and decreasing deployment failures by 95\% through automated rollbacks and health checks.
+  \item Embedded security scans and policy gates across the SDLC, reducing critical vulnerabilities in production by 90\% year-over-year and cutting security review time from 5 days to 2 hours.
+  \item Built secure cloud infrastructure with Terraform managing 200+ resources, achieving 99.95\% uptime and reducing provisioning time from 4 hours to 15 minutes.
+  \item Integrated SonarCloud and Aikido, identifying and resolving 95\% of security vulnerabilities pre-production and improving code quality score from B to A+.
+  \item Implemented GitOps using ArgoCD, reducing configuration drift incidents by 95\% and improving deployment consistency across 4 environments.
+  \item Directed Azure migration of 50+ servers and 15 databases, completing 3 months ahead of schedule with zero data loss and 40\% performance improvement.
+  \end{highlights}
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\newpage
+\begin{twocolentry}{
+    Feb 2023 - Oct 2024
+  }
+  \textbf{DevOps Engineer}, TEO International
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+  \begin{highlights}
+  \item Designed and enforced CI/CD pipelines reducing average deployment time from 2 hours to 20 minutes.
+  \item Containerized 70+ microservices using Docker, reducing environment inconsistencies by 90\% and cutting deployment failures by 70\% across multiple projects.
+  \item Streamlined AKS deployment processes, reducing manual deployment effort by 85\% and improving release consistency across 3 staging environments.
+  \item Promoted DevOps practices across 15 development teams, reducing lead time from commit to production from 2 weeks to 2 days and increasing deployment frequency by 400\%.
+  \item Utilized Terraform to manage 150+ cloud resources, reducing configuration errors by 80\% and cutting infrastructure provisioning time by 75\%.
+  \item Executed automated code reviews with SonarCloud, improving code quality by 50\% and reducing technical debt by 60\% across 30+ code repositories.
+  \end{highlights}
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{twocolentry}{
+    Jun 2022 - Jan 2023
+  }
+  \textbf{Quality Assurance Engineer}, TEO International
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+  \begin{highlights}
+  \item Introduced CI/CD to the My-Masjid project by implementing Azure DevOps pipelines from scratch, automating build and deployment processes that were previously manual.
+  \item Containerized the application using Docker, ensuring consistent environments from development to production and eliminating configuration drift.
+  \item Executed comprehensive manual testing strategies, including functional, regression, and user acceptance testing, identifying and documenting 50+ defects pre-release.
+  \item Conducted end-to-end manual testing for My-Masjid application, validating prayer times, event management, and donation functionality.
+  \item Developed and maintained test cases and checklists, increasing test coverage by 60\% and ensuring critical paths were consistently verified.
+  \item Reported and prioritized bugs based on severity and impact, enabling developers to address critical issues before production deployment.
+  \item Participated in requirement analysis and provided feedback on user experience and potential edge cases.
+  \end{highlights}
+\end{onecolentry}
+
+
+\vspace{0.2 cm}
+
+\begin{twocolentry}{
+    Mar 2021 - Jun 2021
+  }
+  \textbf{Data Analyst Intern}, IBM
+\end{twocolentry}
+
+\vspace{0.10 cm}
+
+\begin{onecolentry}
+  \begin{highlights}
+  \item Analyzed complex datasets using Python, Pandas, and NumPy to extract actionable insights that informed strategic business decisions.
+  \item Built data processing scripts that reduced manual data cleaning time by 60\% and improved data accuracy by 40%.
+  \item Created data visualizations and dashboards using Matplotlib to communicate findings to stakeholders, enabling data-driven decision making.
+  \end{highlights}
+\end{onecolentry}
+
+\section{Certifications}
+\begin{twocolentry}{
+    TryHackMe
+  }
+  \textbf{Jr Penetration Tester}
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{twocolentry}{
+    IBM/Coursera
+  }
+  \textbf{Applied Data Science Capstone}
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{twocolentry}{
+    IBM/Coursera
+  }
+  \textbf{Databases and SQL for Data Science with Honors}
+\end{twocolentry}
+
+% \vspace{0.10 cm}
+% \begin{twocolentry}{
+%     IBM/Coursera
+%   }
+%   \textbf{Python for Data Science and AI}
+% \end{twocolentry}
+
+% \vspace{0.10 cm}
+% \begin{twocolentry}{
+%     IBM/Coursera
+%   }
+%   \textbf{Data Science Orientation}
+% \end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{twocolentry}{
+    IBM/Coursera
+  }
+  \textbf{Data Science Specialization with IBM}
+\end{twocolentry}
+
+\section{Education}
+\begin{twocolentry}{
+    2015 - 2019
+  }
+  \textbf{BS in Computer Science}, Bahria University
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{twocolentry}{
+    2019 - 2020
+  }
+  \textbf{Deutsch A1/A2}, Heinrich-Heine Sprachzentrum
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{twocolentry}{
+    2012 - 2014
+  }
+  \textbf{A Levels}, University of Cambridge
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{twocolentry}{
+    2010 - 2012
+  }
+  \textbf{O Levels}, University of Cambridge
+\end{twocolentry}
+
+\section{Languages}
+\begin{onecolentry}
+\textbf{English}: Full Professional | \textbf{German}: Limited Working  | \textbf{Urdu}: Native or Bilingual | \textbf{Punjabi}: Native or Bilingual  
+\end{onecolentry}
+\label{LastPage}
+\end{document}
